@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web-Component</title>
+    <script type="application/javascript">
+        class MySelect extends HTMLElement {
+            constructor() {
+                super();
+            }
+
+            connectedCallback() {
+                let parentSelectionElement = this;
+                let sel = document.createElement('div');
+                sel.style.minWidth = '30px';
+                sel.style.display = 'inline-block';
+                sel.style.minHeight = '16px';
+                sel.style.border = '1px solid #888';
+                sel.style.borderRadius = '3px';
+                let val = document.createElement('div');
+                sel.appendChild(val);
+                let variants = document.createElement('div');
+                variants.style.display = 'none';
+                variants.style.position = 'absolute';
+                variants.style.zIndex = '1000000';
+                variants.style.background = 'white';
+                variants.style.border = '1px solid #888';
+                variants.style.borderRadius = '3px';
+                if (typeof this.attributes.values !== "undefined") {
+                    let values = this.attributes.values.value.split(" ");
+                    for (let i = 0; i < values.length; i++) {
+                        let option = document.createElement('div');
+                        option.innerText = values[i];
+                        option.onmouseover = function () {
+                            this.style.background = '#ddd';
+                        }
+                        option.onmouseout = function () {
+                            this.style.background = '#fff';
+                        }
+                        option.onclick = function (e) {
+                            val.innerHTML = this.innerHTML;
+                            variants.style.display = 'none';
+                            parentSelectionElement.value = this.innerText;
+                            e.stopPropagation();
+                        }
+                        variants.appendChild(option);
+                    }
+                }
+                sel.appendChild(variants);
+                sel.onclick = function () {
+                    variants.style.display = 'block';
+                }
+                this.appendChild(sel);
+            }
+        }
+
+        setInterval(function () {
+            let test = document.getElementById('fortestonly');
+            console.log(test.value);
+        }, 300)
+        customElements.define('my-select', MySelect);
+
+    </script>
+</head>
+<body>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum tortor facilisis ultricies varius. Pellentesque
+    tempus at lectus ac ornare. Maecenas et eros non risus luctus condimentum nec vitae risus. Sed consequat metus
+    metus, ac cursus urna mollis a. Donec mauris lectus, suscipit ut tellus et, tincidunt scelerisque lorem. Maecenas
+    sodales ornare neque, id semper nibh maximus ut. Aenean sed enim sed metus bibendum ullamcorper. Nam gravida est a
+    commodo rhoncus. Sed semper porttitor dui, et commodo justo ultricies id. Mauris aliquet lectus quis commodo
+    ultrices.</p>
+
+<p>Proin eu mauris nisl. Aenean a lacus ante. Nunc facilisis lacus mi, nec faucibus tortor aliquam imperdiet. Aliquam at
+    tincidunt justo. Mauris justo nisi, volutpat vestibulum massa vel, gravida feugiat mi. Sed pulvinar ipsum in elit
+    tincidunt, non fringilla ipsum rhoncus. Maecenas tincidunt enim sed lacus ultricies, non fermentum nulla
+    sollicitudin. Curabitur non orci et sem malesuada consequat. Curabitur luctus felis orci. Nunc vel augue nec nunc
+    ultricies aliquam iaculis in ex. Nulla eleifend tincidunt rutrum. Donec laoreet, lectus a rutrum ultricies, nunc
+    erat dapibus dolor, at maximus ante risus non sapien.</p>
+
+<!--ID этому элементу особо не нужен. Добавлен чисто для теста. Текст вокруг только для проверки правильного отображения списка вариантов-->
+<my-select values="Пн Вт Ср Чт 999 еще" id="fortestonly"></my-select>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed interdum tortor facilisis ultricies varius. Pellentesque
+    tempus at lectus ac ornare. Maecenas et eros non risus luctus condimentum nec vitae risus. Sed consequat metus
+    metus, ac cursus urna mollis a. Donec mauris lectus, suscipit ut tellus et, tincidunt scelerisque lorem. Maecenas
+    sodales ornare neque, id semper nibh maximus ut. Aenean sed enim sed metus bibendum ullamcorper. Nam gravida est a
+    commodo rhoncus. Sed semper porttitor dui, et commodo justo ultricies id. Mauris aliquet lectus quis commodo
+    ultrices.</p>
+
+<p>Proin eu mauris nisl. Aenean a lacus ante. Nunc facilisis lacus mi, nec faucibus tortor aliquam imperdiet. Aliquam at
+    tincidunt justo. Mauris justo nisi, volutpat vestibulum massa vel, gravida feugiat mi. Sed pulvinar ipsum in elit
+    tincidunt, non fringilla ipsum rhoncus. Maecenas tincidunt enim sed lacus ultricies, non fermentum nulla
+    sollicitudin. Curabitur non orci et sem malesuada consequat. Curabitur luctus felis orci. Nunc vel augue nec nunc
+    ultricies aliquam iaculis in ex. Nulla eleifend tincidunt rutrum. Donec laoreet, lectus a rutrum ultricies, nunc
+    erat dapibus dolor, at maximus ante risus non sapien.</p>
+</body>
+</html>
